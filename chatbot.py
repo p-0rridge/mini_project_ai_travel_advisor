@@ -10,7 +10,7 @@ class TripAdvisor():
         self.model = model
         self.messages = [{"role" : "system", "content" : """
         You are a professional, friendly AI Travel Advisor. Your goal is to help the user plan a highly personalized trip.
-
+exit
         Before you generate any travel plan, you must gather the following key information:
         1. Destination and trip duration
         2. Interests (e.g., food, museums, hiking, beaches, nightlife, shopping, etc.)
@@ -30,7 +30,6 @@ class TripAdvisor():
         - **Practical Travel Tips**
         - **Estimated Budget**
         """}]
-        #self.messages = [{"role" : "user", "content" : "Say 'Tschüß' in Italian"}]
     
     def response(self, user_message):
         self.messages.append({"role" : "user", "content" : user_message})
@@ -39,4 +38,12 @@ class TripAdvisor():
         messages=self.messages)
         bot_message = api_response.choices[0].message.content
         self.messages.append({"role" : "assistant", "content" : bot_message})
-        return bot_message
+        #track token usage
+        input_token_usage_cost = api_response.usage.prompt_tokens*0.00000015
+        output_token_usage_cost = api_response.usage.completion_tokens*0.00000060
+        total_cost = input_token_usage_cost + output_token_usage_cost
+        return bot_message, f'${total_cost:.6f}'
+
+#Preis pro Input-Token: $0.00000015
+
+#Preis pro Output-Token: $0.00000060
