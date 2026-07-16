@@ -4,13 +4,13 @@ from openai import OpenAI
 
 load_dotenv()
 
-client = OpenAI()
+class TripAdvisor():
+    def __init__(self, model="gpt-4o-mini"):
+        self.client = OpenAI()
+        self.model = model
+        self.messages = []
 
-response = client.chat.completions.create(
-    model="gpt-4o-mini",
-    messages=[
-        {"role": "user", "content": "Say 'Hi' in Italian!"}
-    ]
-)
-
-print(response.choices[0].message.content)
+    def response(self):
+        self.client.chat.completions.create(
+        model=self.model,
+        messages=self.messages)
