@@ -19,15 +19,3 @@ class TripAdvisor():
         bot_message = api_response.choices[0].message.content
         self.messages.append({"role" : "assistant", "content" : bot_message})
         return bot_message
-
-#test
-my_bot = TripAdvisor()
-
-
-answer1 = my_bot.response("Say 'Ich liebe dich' in Italian")
-
-print(answer1)
-
-answer2 = my_bot.response("What does that actually mean?")
-
-print(answer2)
