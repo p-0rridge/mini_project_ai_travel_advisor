@@ -9,8 +9,25 @@ class TripAdvisor():
         self.client = OpenAI()
         self.model = model
         self.messages = []
-
-    def response(self):
-        self.client.chat.completions.create(
+        #self.messages = [{"role" : "user", "content" : "Say 'Tschüß' in Italian"}]
+    
+    def response(self, user_message):
+        self.messages.append({"role" : "user", "content" : user_message})
+        api_response = self.client.chat.completions.create(
         model=self.model,
         messages=self.messages)
+        bot_message = api_response.choices[0].message.content
+        self.messages.append({"role" : "assistant", "content" : bot_message})
+        return bot_message
+
+#test
+my_bot = TripAdvisor()
+
+
+answer1 = my_bot.response("Say 'Ich liebe dich' in Italian")
+
+print(answer1)
+
+answer2 = my_bot.response("What does that actually mean?")
+
+print(answer2)
