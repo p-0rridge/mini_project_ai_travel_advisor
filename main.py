@@ -11,6 +11,7 @@ def start_chat():
 
         if user_input == "exit":
             print("Au revoir, have a nice trip!")
+            print(bot.print_conversation_cost())
             break
 
         bot_answer = bot.response(user_input)

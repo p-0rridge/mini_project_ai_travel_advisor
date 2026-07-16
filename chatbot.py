@@ -8,7 +8,7 @@ class TripAdvisor():
     def __init__(self, model="gpt-4o-mini"):
         self.client = OpenAI()
         self.model = model
-        self.token_cost = 0
+        self.conversation_cost = 0.0
         self.messages = [{"role" : "system", "content" : """
         You are a professional, friendly AI Travel Advisor. Your goal is to help the user plan a highly personalized trip.
 exit
@@ -40,11 +40,15 @@ exit
         bot_message = api_response.choices[0].message.content
         self.messages.append({"role" : "assistant", "content" : bot_message})
         #track token usage
-        total_cost = self.calculate_token_cost(api_response.usage.prompt_tokens, api_response.usage.completion_tokens)
-        return bot_message, f'${total_cost:.6f}'
+        current_turn_cost = self.calculate_token_cost(api_response.usage.prompt_tokens, api_response.usage.completion_tokens)
+        self.conversation_cost += current_turn_cost
+        return bot_message
     
     def calculate_token_cost(self, input_tokens, output_tokens):
         input_token_usage_cost = input_tokens*0.00000015
         output_token_usage_cost = output_tokens*0.00000060
         total_cost = input_token_usage_cost + output_token_usage_cost
         return total_cost
+    
+    def print_conversation_cost(self):
+        return f"This conversation cost us: ${self.conversation_cost:.6f}"
